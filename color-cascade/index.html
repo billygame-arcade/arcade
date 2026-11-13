@@ -1027,9 +1027,9 @@ h2 {
     el.bestTitle.textContent = store.best;
     el.streakTitle.textContent = currentStreak();
     var todayScore = store.days[todayKey];
-    el.dailySub.textContent = todayScore
-      ? shortDay() + ' · best ' + todayScore + ' · replay'
-      : shortDay() + ' · not played yet';
+    el.dailySub.textContent = todayScore === undefined
+      ? shortDay() + ' · not played yet'
+      : shortDay() + ' · best ' + todayScore + ' · replay';
 
     var bars = el.week.children;
     var i, k, v, max = 1;
@@ -1039,11 +1039,11 @@ h2 {
     }
     for (i = 0; i < 7; i++) {
       k = shiftKey(todayKey, i - 6);
-      v = store.days[k] || 0;
+      v = store.days[k];
       var b = bars[i];
-      b.style.height = (6 + Math.round(25 * (v / max))) + 'px';
-      b.className = (v ? 'on' : '') + (k === todayKey ? ' now' : '');
-      b.title = k + ' · ' + (v || 'no run');
+      b.style.height = (6 + Math.round(25 * ((v || 0) / max))) + 'px';
+      b.className = (v === undefined ? '' : 'on') + (k === todayKey ? ' now' : '');
+      b.title = k + ' · ' + (v === undefined ? 'no run' : v);
     }
   }
 
